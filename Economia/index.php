@@ -67,7 +67,7 @@ include ("modelo/modelo.php")
             </a>
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
               <li><a class="dropdown-item menu-contable" href="#">Nuevo Balance</a></li>
-              <li><a class="dropdown-item menu-contable" href="#">Hitorial</a></li>
+              <li><a class="dropdown-item menu-contable" href="#">Historial</a></li>
             </ul>
           </li>
 
@@ -102,7 +102,7 @@ include ("modelo/modelo.php")
           </div> -->
           <div class="row">
             <!-- Formulario de insert para plan de cuenta -->
-            <div class="col-lg-6">
+            <div class="col-lg-6"> <!--alinear estas columnas-->
               <form style="padding: 5%; background-color: white; width:100%;" method="post" action="modelo.php" class="rounded">
                 <div class="mb-3">
                   <label class="form-label">Grupo</label>
