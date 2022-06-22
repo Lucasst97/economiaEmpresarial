@@ -1,5 +1,5 @@
 <?php 
-echo 'hola';
+echo 'hola wenas';
 require 'conex.php';
 
 //Función para obtener los datos de la base de datos
