@@ -25,7 +25,7 @@ include ("modelo/modelo.php")
       background-position: center;
       background-size: auto;
     }
-
+    }
     .menu-contable:hover {
       color: black;
       text-decoration: underline;
@@ -50,7 +50,7 @@ include ("modelo/modelo.php")
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse position-absolute end-0" " id=" navbarSupportedContent">
+      <div class="collapse navbar-collapse position-absolute end-0"  id=" navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0 pull-xs-left">
           <li class="nav-item">
             <a class="nav-link active text-light menu-contable" style="padding-right: 30px" aria-current="page" href="#">Inicio</a>
@@ -102,12 +102,12 @@ include ("modelo/modelo.php")
           </div> -->
           <div class="row">
             <!-- Formulario de insert para plan de cuenta -->
-            <div class="col-lg-6"> <!--alinear estas columnas-->
+            <div class="col-lg-6">
               <form style="padding: 5%; background-color: white; width:100%;" method="post" action="modelo.php" class="rounded">
                 <div class="mb-3">
                   <label class="form-label">Grupo</label>
                   <!-- <input type="tetx" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"> -->
-                  <select name="grupo_cuenta" id="" style="width: 200px; padding:.375rem .75rem">
+                  <select name="grupo_cuenta" id="" style=" position:  relative;left: 10px;width: 200px; padding:.375rem .75rem">
                     <option value="">Activo</option>
                     <option value="">Pasivo</option>
                     <option value="">Patrimonio Neto</option>
@@ -116,7 +116,7 @@ include ("modelo/modelo.php")
                 </div>
                 <div class="mb-3">
                   <label class="form-label">Bloque</label>
-                  <select name="bloque_cuenta" id="" style="width: 200px; padding:.375rem .75rem">
+                  <select name="bloque_cuenta" id="" style="position:  relative;left: 3px;width: 200px; padding:.375rem .75rem">
                     <option value=""> - </option>
                     <option value="">Corriente</option>
                     <option value="">No corriente</option>
@@ -130,25 +130,63 @@ include ("modelo/modelo.php")
                 <div class="mb-3">
                   <label class="form-label">Rubro</label>
                   <!-- <input type="text" class="form-control" id="exampleInputPassword1"> -->
-                  <select name="rubro_cuenta" id="" style="width: 200px; padding:.375rem .75rem">
+                  <select name="rubro_cuenta" id="" style="position:  relative;left: 11px;width: 200px; padding:.375rem .75rem">
                     <option value="">Opcion 1</option>
 
                   </select>
                 </div>
                 <div class="mb-3">
-                  <label class="form-label">Cuenta</label>
-                  <input type="text" name="cuenta" class="form-control" style="width: 200px; padding:.375rem .75rem" id="exampleInputPassword1">
+                  <label class="form-label" style="float: left ;">Cuenta</label>
+                  <input type="text" name="cuenta" class="form-control" style="position:  relative;left: 6.5px;bottom: 5px;width: 200px; padding:.375rem .75rem" id="exampleInputPassword1">
                 </div>
-
-                <button type="submit" class="btn btn-primary">Ingresar</button>
+                <button type="submit" class="btn btn-primary" onclick="return IngresarCuenta()">Ingresar</button>
               </form>
             </div>
-            
+             <script type="text/javascript">
+                  function IngresarCuenta ()
+                  {
+                    var respuesta = alert("Verifique la cuenta que intenta ingresar");
+                    if (respuesta == true)
+                    {
+                      return true;
+                    }
+                    else
+                    {
+                      return false;
+                    }
+                  }
+                  function ModificarCuenta ()
+                  {
+                    var respuesta = confirm("¿Esta seguro que desea modificar la cuenta?");
+                    if (respuesta == true)
+                    {
+                      alert("¡Cuenta modificada con exito!");
+                      return true;
+                    }
+                    else
+                    {
+                      return false;
+                    }
+                  }
+                  function EliminarCuenta ()
+                  {
+                    var respuesta = confirm("¿Esta seguro que desea eliminar la cuenta?");
+                    if (respuesta == true)
+                    {
+                      alert("¡Cuenta eliminada con exito!");
+                      return true;
+                    }
+                    else
+                    {
+                      return false;
+                    }
+                  }  
+                  </script>
             <div class="col-lg-6">
               <div class="row rounded" style="padding: 5%; background-color: white; width:100%;">
                 <div class="col-lg-12  d-grid gap-2">
-                  <button type="button" style="width:50%; text-align:center" class="btn btn-primary">Modificar Cuenta</button>
-                  <button type="button" style="width:50%; text-align:center" class="btn btn-primary">Eliminar Cuenta</button>
+                  <button type="button" style="width:50%; text-align:center" class="btn btn-primary" onclick="return ModificarCuenta()">Modificar Cuenta</button>
+                  <button type="button" style="width:50%; text-align:center" class="btn btn-primary" onclick="return EliminarCuenta()">Eliminar Cuenta</button>
                 </div>
               </div>
 
