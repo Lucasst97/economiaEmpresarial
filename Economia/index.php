@@ -1,6 +1,6 @@
 <?php
 include("modelo/conex.php");
-include ("modelo/modelo.php")
+include("modelo/modelo.php")
 ?>
 
 <!doctype html>
@@ -38,51 +38,60 @@ include ("modelo/modelo.php")
     }
   </style>
   <title>Economia Empresarial</title>
-  
+
   <!-- <script language="javascript" src="js/jquery-3.6.0.min.js"></script> -->
   <script src="https://code.jquery.com/jquery-latest.js"></script>
   <script language="javascript">
-			$(document).ready(function(){
-				$("#option_grupo").change(function () {
-					//$('#cbx_localidad').find('option').remove().end().append('<option value="whatever"></option>').val('whatever');
-					$("#option_grupo option:selected").each(function () {
-						cod_grupo = $(this).val();
-            //console.log(cod_grupo);
-						$.post("modelo/getBloque.php", { cod_grupo: cod_grupo }, function(data){
-							$("#option_bloque").html(data);
-						});            
-					});
-				})
-			});
-			
-			$(document).ready(function(){
-				$("#option_bloque").change(function () {
-					$("#option_bloque option:selected").each(function () {
-						cod_bloque = $(this).val();
-            //console.log(cod_grupo, cod_bloque);
-            //console.log(cod_bloque);
-						$.post("modelo/getRubro.php", {cod_grupo: cod_grupo, cod_bloque: cod_bloque },  function(data){
-							$("#option_rubro").html(data);
-						} );            
-					});
-				})
-			});
+    $(document).ready(function() {
+      $("#option_grupo").change(function() {
+        $('#option_rubro').find('option').remove().end().append('<option value="whatever"></option>').val('whatever');
+        $("#option_grupo option:selected").each(function() {
+          cod_grupo = $(this).val();
+          console.log(typeof(cod_grupo), cod_grupo);
+          $.post("modelo/getBloque.php", {
+            cod_grupo: cod_grupo
+          }, function(data) {
+            $("#option_bloque").html(data);
+          });
+        });
+      })
+    });
 
-      $(document).ready(function(){
-				$("#option_rubro").change(function () {
-					$("#option_rubro option:selected").each(function () {
-						cod_rubro = $(this).val();
-            console.log(cod_grupo, cod_bloque, cod_rubro);
-            //console.log(cod_bloque);
-						$.post("modelo/getCuenta.php", {cod_grupo: cod_grupo, cod_bloque: cod_bloque, cod_rubro: cod_rubro },  function(data){
-							$("#option_cuenta").html(data);
-						} );            
-					});
-				})
-			});
+    $(document).ready(function() {
+      $("#option_bloque").change(function() {
+        $("#option_bloque option:selected").each(function() {
+          cod_bloque = $(this).val();
+          console.log(typeof(cod_bloque), cod_bloque);
+          //console.log(cod_grupo, cod_bloque);
+          //console.log(cod_bloque);
+          $.post("modelo/getRubro.php", {
+            cod_grupo: cod_grupo,
+            cod_bloque: cod_bloque
+          }, function(data) {
+            $("#option_rubro").html(data);
+          });
+        });
+      })
+    });
 
-      
-		</script>
+    $(document).ready(function() {
+      $("#option_rubro").change(function() {
+        $("#option_rubro option:selected").each(function() {
+          cod_rubro = $(this).val();
+          //alert(cod_rubro)
+          console.log(typeof(cod_rubro), cod_rubro);
+          //console.log(cod_bloque);
+          $.post("modelo/getCuenta.php", {
+            cod_grupo: cod_grupo,
+            cod_bloque: cod_bloque,
+            cod_rubro: cod_rubro
+          }, function(data) {
+            $("#option_cuenta").html(data);
+          });
+        });
+      })
+    });
+  </script>
 </head>
 
 <body>
@@ -95,7 +104,7 @@ include ("modelo/modelo.php")
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
-      <div class="collapse navbar-collapse position-absolute end-0"  id=" navbarSupportedContent">
+      <div class="collapse navbar-collapse position-absolute end-0" id=" navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0 pull-xs-left">
           <li class="nav-item">
             <a class="nav-link active text-light menu-contable" style="padding-right: 30px" aria-current="page" href="#">Inicio</a>
@@ -149,45 +158,52 @@ include ("modelo/modelo.php")
             <!-- Formulario de insert para plan de cuenta -->
             <div class="col-lg-6">
               <form style="padding: 5%; background-color: white; width:100%;" method="post" action="modelo.php" class="rounded">
-                
+
                 <div class="mb-3">
                   <label class="form-label">Grupo</label>
                   <!-- <input type="tetx" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"> -->
-                  <select name="option_grupo" id="option_grupo" style="width: 200px; padding:.375rem .75rem">
-                   <option>Seleccione Grupo</option>
+                  <select type="text" name="option_grupo" id="option_grupo" style="width: 200px; padding:.375rem .75rem">
+                    <option>Seleccione Grupo</option>
                     <?php
                     $queryG = "select g.cod_grupo 'cod_grupo', g.nombre_grupo 'nombre_grupo' from grupo g";
                     $rs = mysqli_query($conex, $queryG);
-                                        
+
                     while ($row = mysqli_fetch_assoc($rs)) {
-                        //echo $row['nombre_grupo'];
-                        echo '<option value="'.$row['cod_grupo'].'">'.$row['nombre_grupo'].'</option>';
+                      //echo $row['nombre_grupo'];
+                      echo '<option value="' . $row['cod_grupo'] . '">' . $row['nombre_grupo'] . '</option>';
                     }
                     ?>
-                  </select>                  
+                  </select>
                 </div>
 
                 <div class="mb-3">
                   <label class="form-label">Bloque</label>
-                  <select name="option_bloque" id="option_bloque" style="width: 200px; padding:.375rem .75rem">
-                    
+                  <select  type="text" name="option_bloque" id="option_bloque" style="width: 200px; padding:.375rem .75rem">
+
                   </select>
                 </div>
 
                 <div class="mb-3">
                   <label class="form-label">Rubro</label>
                   <!-- <input type="text" class="form-control" id="exampleInputPassword1"> -->
-                  <select name="option_rubro" id="option_rubro" style="width: 200px; padding:.375rem .75rem">
-                    
+                  <select type="text" name="option_rubro" id="option_rubro" style="width: 200px; padding:.375rem .75rem">
+
                   </select>
                 </div>
 
                 <div class="mb-3">
-                  <label class="form-label">Cuenta</label>
+                  <label  type="text" class="form-label">Cuenta</label>
                   <!-- <input type="text" class="form-control" id="exampleInputPassword1"> -->
-                  <select name="option_cuenta" id="option_cuenta" style="width: 200px; padding:.375rem .75rem">
+                  <table border="1" name="option_cuenta" id="option_cuenta">
+                    <tr>
+                      <th>Codigo</th>
+                      <th>Cuenta</th>
+                      <th></th>
+                    </tr>
+
+                   
                     
-                  </select>
+                  </table>
                 </div>
 
                 <!-- <div class="mb-3">
@@ -198,7 +214,7 @@ include ("modelo/modelo.php")
                 <button type="submit" class="btn btn-primary">Ingresar</button>
               </form>
             </div>
-            
+
             <div class="col-lg-6">
               <div class="row rounded" style="padding: 5%; background-color: white; width:100%;">
                 <div class="col-lg-12  d-grid gap-2">
