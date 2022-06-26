@@ -17,20 +17,45 @@ while ($rowC = mysqli_fetch_assoc($rsC)) {
 
     $cod_cuenta = $rowC['cod_cuenta'];
 
-    $html .= "<tr><td>".$cod_cuenta."</td><td>" . $rowC['nombre_cuenta'] . "</td><td><input type='button' class='matricularBtn' name='boton' id='boton' onclick='Cuenta($cod_grupo, $cod_bloque, $cod_rubro, $cod_cuenta)' value='Modificar'></td><td><input type='button' class='matricularBtn' name='boton' id='boton' onclick='Cuenta($cod_grupo, $cod_bloque, $cod_rubro, $cod_cuenta)' value='Eliminar'></td></tr>";
+    $html .= "<tr><td>" . $rowC['nombre_cuenta'] . "</td><td><input type='button' class='' name='boton' id='boton' onclick='Modificar($cod_grupo, $cod_bloque, $cod_rubro, $cod_cuenta)' value='Modificar'></td><td><input type='button' class='' name='boton' id='boton' onclick='Eliminar($cod_grupo, $cod_bloque, $cod_rubro,$cod_cuenta)' value='Eliminar'></td></tr>";
+   
 }
 
 
 echo $html;
 ?>
 <script>
-    function Cuenta(cod_grupo, cod_bloque, cod_rubro, cod_cuenta) {
+    function Eliminar(cod_grupo, cod_bloque, cod_rubro, cod_cuenta) {
+        console.log(cod_grupo, cod_bloque, cod_rubro, cod_cuenta)
+
+        var send= 
+        cod_cuenta= cod_cuenta.toString()
+        var formData = 'cod_grupo=' + cod_grupo + '&cod_bloque=' + cod_bloque + '&cod_rubro=' + cod_rubro + '&cod_cuenta='+cod_cuenta;
+
+        //var ajax = nuevoAjax();
+        var ajax = nuevoAjax();
+        ajax.open("POST", "modelo/eliminarCuenta.php", true);
+        ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        ajax.send(formData);
+        /* "cod_grupo="+cod_grupo, "cod_bloque="+cod_bloque, "cod_rubro="+cod_rubro,"cod_cuenta="+cod_cuenta */
+        
+        ajax.onreadystatechange = function() {
+            if (ajax.readyState == 4) {
+                var respuesta = ajax.responseText;
+                alert(respuesta)
+                //document.getElementById("informacion").innerHTML=respuesta; 
+            }
+        }
+    }
+
+    function Modificar(cod_grupo, cod_bloque, cod_rubro, cod_cuenta) {
+
         //cCuenta=cod_cuenta.toString(); 
         //alert(typeof(cod_cuenta));
         //console.log(cod_cuenta+", "+typeof(cod_cuenta));
         /* num = parseInt(cod_cuenta,10);
         console.log('jña: '+num); */
-        
+
         /* if (typeof(cod_cuenta=='number')) {
             cod_cuenta= cod_cuenta.toString();
             console.log("tipo de dato cambiado");
@@ -46,7 +71,7 @@ echo $html;
 
             cod_cuenta = cod_cuenta.toString();
             //console.log("2: ", cod_cuenta, typeof(cod_cuenta));
-          
+
 
             cod_cuenta = codAux + cod_cuenta;
             //console.log("3: tipo: ", typeof(cod_cuenta));
@@ -68,37 +93,55 @@ echo $html;
             } else {
                 console.log("...");
                 if (cod_cuenta >= 100 && cod_cuenta <= 999) {
-                //console.log("cuenta mayor a 10");
-                codAux = '';
-                //console.log(typeof(cod_cuenta));
+                    //console.log("cuenta mayor a 10");
+                    codAux = '';
+                    //console.log(typeof(cod_cuenta));
 
-                cod_cuenta = cod_cuenta.toString();
-                /* console.log(typeof(cod_cuenta));
-                console.log(cod_cuenta); */
+                    cod_cuenta = cod_cuenta.toString();
+                    /* console.log(typeof(cod_cuenta));
+                    console.log(cod_cuenta); */
 
-                cod_cuenta = codAux + cod_cuenta;
-                /* console.log(typeof(cod_cuenta));
-                console.log(cod_cuenta); */
-                console.log("Cod Cuenta: ", cod_cuenta);
-            } else {
-                console.log("Codigo de Cuenta Incorrecto");
-            }
+                    cod_cuenta = codAux + cod_cuenta;
+                    /* console.log(typeof(cod_cuenta));
+                    console.log(cod_cuenta); */
+                    console.log("Cod Cuenta: ", cod_cuenta);
+                } else {
+                    console.log("Codigo de Cuenta Incorrecto");
+                }
             }
         }
 
-        /* var ajax=nuevoAjax();
-        ajax.open("POST", "eliminarCuenta.php" , true);
+        /* var ajax = nuevoAjax();
+        ajax.open("POST", "eliminarCuenta.php", true);
         ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        ajax.send("cod_cuenta="+cod_cuenta, "cod_grupo="+cod_grupo, "cod_bloque="+cod_bloque, "cod_rubro="+cod_rubro );
+        ajax.send("cod_cuenta=" + cod_cuenta, "cod_grupo=" + cod_grupo, "cod_bloque=" + cod_bloque, "cod_rubro=" + cod_rubro);
 
-        ajax.onreadystatechange=function() 
-        { 
-        	if (ajax.readyState==4)
-        	{
-        		var respuesta= ajax.responseText;
-        		//alert(respuesta)
-                document.getElementById("informacion").innerHTML=respuesta; 
+        ajax.onreadystatechange = function() {
+            if (ajax.readyState == 4) {
+                var respuesta = ajax.responseText;
+                alert(respuesta)
+                //document.getElementById("informacion").innerHTML=respuesta; 
             }
         } */
+    }
+
+
+
+
+    function nuevoAjax() {
+        var xmlhttp = false;
+        try {
+            xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
+        } catch (e) {
+            try {
+                xmlhttp = new ActiveXObject("Microsoft.XMLHTTP")
+            } catch (E) {
+                xmlhttp = false;
+            }
+        }
+        if (!xmlhttp && typeof XMLHttpRequest != "undefined") {
+            xmlhttp = new XMLHttpRequest();
+        }
+        return xmlhttp;
     }
 </script>
