@@ -17,7 +17,7 @@ while ($rowC = mysqli_fetch_assoc($rsC)) {
 
     $cod_cuenta = $rowC['cod_cuenta'];
 
-    $html .= "<tr><td>".$cod_cuenta."</td><td>" . $rowC['nombre_cuenta'] . "</td><td><input type='button' class='matricularBtn' name='boton' id='boton' onclick='Cuenta($cod_grupo, $cod_bloque, $cod_rubro, $cod_cuenta)' value='Modificar'></td><td><input type='button' class='matricularBtn' name='boton' id='boton' onclick='Cuenta($cod_grupo, $cod_bloque, $cod_rubro, $cod_cuenta)' value='Eliminar'></td></tr>";
+    $html .= "<tr><td>".$cod_cuenta."</td><td>" . $rowC['nombre_cuenta'] . "</td><td><input type='button' class='matricularBtn btn btn-primary' name='boton' id='boton' onclick='Cuenta($cod_grupo, $cod_bloque, $cod_rubro, $cod_cuenta)' value='Modificar'></td><td><input type='button' class='matricularBtn btn btn-primary' name='boton' id='boton' onclick='Cuenta($cod_grupo, $cod_bloque, $cod_rubro, $cod_cuenta)' value='Eliminar'></td></tr>";
 }
 
 

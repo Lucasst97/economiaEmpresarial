@@ -159,7 +159,7 @@ include("modelo/modelo.php")
                   <div class="mb-3">
                     <label class="titulo-table" type="text" class="form-label">Cuenta</label>
                     <!-- <input type="text" class="form-control" id="exampleInputPassword1"> -->
-                    <table class="table" border="0" name="option_cuenta" id="option_cuenta">
+                    <table class="table table-bordered" border="1" name="option_cuenta" id="option_cuenta">
                       <tr>
                         <th>Codigo</th>
                         <th>Cuenta</th>
@@ -175,7 +175,7 @@ include("modelo/modelo.php")
 
                   <!-- <button type="submit" class="btn btn-primary">Ingresar</button> -->
 
-                  <input type='button' class='' name='boton' id='boton' onclick='javascript:FuncionInsertCuentaNueva(<?php echo [$cod_grupo, $cod_bloque, $cod_rubro] ?>)' value='Ingresar'>
+                  <input type='button' class='btn btn-primary w-50 table' name='boton' id='boton' onclick='javascript:FuncionInsertCuentaNueva(<?php echo [$cod_grupo, $cod_bloque, $cod_rubro] ?>)' value='Ingresar'>
 
                 </form>
               </div>
