@@ -196,9 +196,7 @@ include("modelo/modelo.php")
                   <!-- <input type="text" class="form-control" id="exampleInputPassword1"> -->
                   <table border="1" name="option_cuenta" id="option_cuenta">
                     <tr>
-                      <th>Codigo</th>
-                      <th>Cuenta</th>
-                      <th></th>
+                      
                     </tr>
 
                    
