@@ -1,117 +1,11 @@
 <?php
 include("modelo/conex.php");
 include("modelo/modelo.php");
+include ("vista/header.php");
+include ("vista/menu.php");
 $selectcuentastotales= selectTotalGrupos();
+
 ?>
-
-<!doctype html>
-<html lang="en">
-
-<head>
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-  <style>
-    body {
-      font-family: 'Montserrat', sans-serif;
-      background-image: url('elements/background.jpg');
-      background-repeat: no-repeat;
-      background-position: center;
-      background-size: auto;
-    }
-
-    .menu-contable:hover {
-      color: black;
-      text-decoration: underline;
-    }
-
-    .card {
-      border: none;
-      width: 300px;
-      height: 450px;
-    }
-  </style>
-  <title>Economia Empresarial</title>
-
-  <!-- <script language="javascript" src="js/jquery-3.6.0.min.js"></script> -->
-  <script src="https://code.jquery.com/jquery-latest.js"></script>
-  <script language="javascript">
-    $(document).ready(function() {
-      $("#option_grupo").change(function() {
-        $('#option_rubro').find('option').remove().end().append('<option value="whatever"></option>').val('whatever');
-        $("#option_grupo option:selected").each(function() {
-          cod_grupo = $(this).val();
-          console.log(typeof(cod_grupo), cod_grupo);
-          $.post("modelo/getBloque.php", {
-            cod_grupo: cod_grupo
-          }, function(data) {
-            $("#option_bloque").html(data);
-          });
-        });
-      })
-    });
-
-    $(document).ready(function() {
-      $("#option_bloque").change(function() {
-        $("#option_bloque option:selected").each(function() {
-          cod_bloque = $(this).val();
-          console.log(typeof(cod_bloque), cod_bloque);
-          //console.log(cod_grupo, cod_bloque);
-          //console.log(cod_bloque);
-          $.post("modelo/getRubro.php", {
-            cod_grupo: cod_grupo,
-            cod_bloque: cod_bloque
-          }, function(data) {
-            $("#option_rubro").html(data);
-          });
-        });
-      })
-    });
-
-    $(document).ready(function() {
-      $("#option_rubro").change(function() {
-        $("#option_rubro option:selected").each(function() {
-          cod_rubro = $(this).val();
-          //alert(cod_rubro)
-          console.log(typeof(cod_rubro), cod_rubro);
-          //console.log(cod_bloque);
-          $.post("modelo/getCuenta.php", {
-            cod_grupo: cod_grupo,
-            cod_bloque: cod_bloque,
-            cod_rubro: cod_rubro
-          }, function(data) {
-            $("#option_cuenta").html(data);
-          });
-        });
-      })
-    });
-
-    function InsertCuenta() {
-      $('#ModalInsertCuenta').modal('show');
-      $.ajax({
-        type: "post",
-        url: "modelo/ModalinsertCuenta.php",
-        data: {
-          grupo: $("#option_grupo").find('option:selected').text(),
-          bloque: $("#option_bloque").find('option:selected').text(),
-          rubro: $("#option_rubro").find('option:selected').text(),
-        },
-        success: function(response) {
-          $('#modal-body').html(response);
-        }
-      });
-    }
-  </script>
-</head>
-
-<!-- MODAL FORMULARIO DE CUENTA -->
 <div class="modal fade" id="ModalInsertCuenta" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -129,45 +23,6 @@ $selectcuentastotales= selectTotalGrupos();
   </div>
 </div>
 
-<body>
-  <nav class="navbar navbar-expand-lg " style="background-color: #284078;">
-    <div class="container-fluid align-self-center">
-      <a class="navbar-brand d-block text-light " href="#">
-        <img src="elements/economy.png" alt="" width="30" height="30" class="d-inline-block align-text-top me-2">
-        Estudio Contable
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse position-absolute end-0" id=" navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0 pull-xs-left">
-          <li class="nav-item">
-            <a class="nav-link active text-light menu-contable" style="padding-right: 30px" aria-current="page" href="#">Inicio</a>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link text-light menu-contable" style="padding-right: 30px" href="#">Plan de Cuentas
-            </a>
-          </li>
-
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle text-light menu-contable" style="padding-right: 30px" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Balance
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item menu-contable" href="#">Nuevo Balance</a></li>
-              <li><a class="dropdown-item menu-contable" href="#">Hitorial</a></li>
-            </ul>
-          </li>
-
-          <li class="nav-item">
-            <a class="nav-link text-light menu-contable" style="padding-right: 30px">Libro Diario</a>
-          </li>
-
-        </ul>
-      </div>
-    </div>
-  </nav>
   <div class="d-flex">
     <div class="w-100">
       <div class="py-3">
@@ -226,34 +81,34 @@ $selectcuentastotales= selectTotalGrupos();
               </form>
             </div>
             <div class="col-lg-6" style="background-color:#FFF">
-            <form action="modelo/boletocuentas.php" method="post">
-              
-              <table class="table">
-                <thead>
-                  <tr>
-                    <td>#</td>
-                    <td>Cuenta Codigo</td>
-                    <td>Nombre Cuenta</td>
-                    <td>Saldo</td>
-                  </tr>
-                </thead>
-                <tbody>
-                  <?php while($reg=mysqli_fetch_array($selectcuentastotales)){ ?>
-                  <tr>
-                    <td> - </td>
-                    <td><?php echo $reg['cod_bloque'] ?></td>
-                    <td><?php echo $reg['nombre_cuenta'] ?></td>
-                    <td><?php echo $reg['cod_rubro'] ?></td>
-                  </tr>
-                  <?php
-                  }
-                  ?>
-                </tbody>
-              </table>
-              <div class="col-12 justify-content-center">
-                <button class="btn btn-secondary">Descargar Cuentas</button>
-              </div>
-            </form>
+              <form action="modelo/boletocuentas.php" method="post">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <td>#</td>
+                      <td>Cuenta Codigo</td>
+                      <td>Nombre Cuenta</td>
+                      <td>Saldo</td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <?php while($reg=mysqli_fetch_array($selectcuentastotales)){ ?>
+                    <tr>
+                      <td> - </td>
+                      <td><?php echo $reg['cod_bloque'] ?></td>
+                      <td><?php echo $reg['nombre_cuenta'] ?></td>
+                      <td><?php echo $reg['cod_rubro'] ?></td>
+                      <td><?php ?></td>
+                    </tr>
+                    <?php
+                    }
+                    ?>
+                  </tbody>
+                </table>
+                <div class="col-12 text-center p-2">
+                  <button class="btn btn-warning">Descargar Cuentas</button>
+                </div>
+              </form>
             </div>
           </div>
 
@@ -305,3 +160,6 @@ $selectcuentastotales= selectTotalGrupos();
 </body>
 
 </html>
+<?php 
+  include ("vista/footer.php");
+?>
