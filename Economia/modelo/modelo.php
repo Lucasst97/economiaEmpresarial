@@ -1,10 +1,9 @@
 <?php 
-echo 'hola';
 require 'conex.php';
 
 //Función para obtener los datos de la base de datos
 function conectar() {
-    $conex = mysqli_connect("localhost", "root", "", "economia_empresarial");
+    $conex = mysqli_connect("localhost", "root", "", "economia_empresarial_v4");
     if (!$conex) {
         echo "Error: No se pudo conectar a MySQL." . PHP_EOL;
         echo "errno de depuración: " . mysqli_connect_errno() . PHP_EOL;
@@ -21,9 +20,8 @@ function desconectar($conex) {
 
 function selectTotalGrupos() {
     $conex = conectar();
-    $sql = "SELECT * FROM grupo_cuenta";
+    $sql = "SELECT * FROM cuenta LIMIT 10";
     $result = mysqli_query($conex, $sql);
-    desconectar($conex);
     return $result;
 }
 
