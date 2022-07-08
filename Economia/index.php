@@ -4,8 +4,65 @@ include("modelo/modelo.php");
 include ("vista/header.php");
 include ("vista/menu.php");
 $selectcuentastotales= selectTotalGrupos();
-
 ?>
+<!-- =================================================================== -->
+
+
+<script src="https://code.jquery.com/jquery-latest.js"></script>
+<script language="javascript">
+  $(document).ready(function() {
+    $("#option_grupo").change(function() {
+      $('#option_rubro').find('option').remove().end().append('<option value="whatever"></option>').val('whatever');
+      $("#option_grupo option:selected").each(function() {
+        cod_grupo = $(this).val();
+        console.log(typeof(cod_grupo), cod_grupo);
+        $.post("modelo/getBloque.php", {
+          cod_grupo: cod_grupo
+        }, function(data) {
+          $("#option_bloque").html(data);
+        });
+      });
+    })
+  });
+
+  $(document).ready(function() {
+    $("#option_bloque").change(function() {
+      $("#option_bloque option:selected").each(function() {
+        cod_bloque = $(this).val();
+        console.log(typeof(cod_bloque), cod_bloque);
+        //console.log(cod_grupo, cod_bloque);
+        //console.log(cod_bloque);
+        $.post("modelo/getRubro.php", {
+          cod_grupo: cod_grupo,
+          cod_bloque: cod_bloque
+        }, function(data) {
+          $("#option_rubro").html(data);
+        });
+      });
+    })
+  });
+
+  $(document).ready(function() {
+    $("#option_rubro").change(function() {
+      $("#option_rubro option:selected").each(function() {
+        cod_rubro = $(this).val();
+        //alert(cod_rubro)
+        console.log(typeof(cod_rubro), cod_rubro);
+        //console.log(cod_bloque);
+        $.post("modelo/getCuenta.php", {
+          cod_grupo: cod_grupo,
+          cod_bloque: cod_bloque,
+          cod_rubro: cod_rubro
+        }, function(data) {
+          $("#option_cuenta").html(data);
+        });
+      });
+    })
+  });
+  </script>
+
+
+<!-- =================================================================== -->
 <div class="modal fade" id="ModalInsertCuenta" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -17,11 +74,11 @@ $selectcuentastotales= selectTotalGrupos();
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        
       </div>
     </div>
   </div>
 </div>
+<!-- =================================================================== -->
 
   <div class="d-flex">
     <div class="w-100">
@@ -31,55 +88,40 @@ $selectcuentastotales= selectTotalGrupos();
             <!-- Formulario de insert para plan de cuenta -->
             <div class="col-lg-6">
               <form style="padding: 5%; background-color: white; width:100%;" method="post" action="modelo.php" class="rounded">
-
                 <div class="mb-3">
                   <label class="form-label">Grupo</label>
                   <!-- <input type="tetx" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"> -->
                   <select type="text" name="option_grupo" id="option_grupo" style="width: 200px; padding:.375rem .75rem">
                     <option>Seleccione Grupo</option>
                     <?php
-                    $queryG = "select g.cod_grupo 'cod_grupo', g.nombre_grupo 'nombre_grupo' from grupo g";
-                    $rs = mysqli_query($conex, $queryG);
-
-                    while ($row = mysqli_fetch_assoc($rs)) {
-                      //echo $row['nombre_grupo'];
-                      echo '<option value="' . $row['cod_grupo'] . '">' . $row['nombre_grupo'] . '</option>';
+                      $queryG = "select g.cod_grupo 'cod_grupo', g.nombre_grupo 'nombre_grupo' from grupo g";
+                      $rs = mysqli_query($conex, $queryG);
+                      while ($row = mysqli_fetch_assoc($rs)) {
+                        //echo $row['nombre_grupo'];
+                        echo '<option value="' . $row['cod_grupo'] . '">' . $row['nombre_grupo'] . '</option>';
                     }
                     ?>
                   </select>
                 </div>
-
                 <div class="mb-3">
                   <label class="form-label">Bloque</label>
                   <select type="text" name="option_bloque" id="option_bloque" style="width: 200px; padding:.375rem .75rem">
-
                   </select>
                 </div>
-
                 <div class="mb-3">
                   <label class="form-label">Rubro</label>
-                  <!-- <input type="text" class="form-control" id="exampleInputPassword1"> -->
                   <select type="text" name="option_rubro" id="option_rubro" style="width: 200px; padding:.375rem .75rem">
-
                   </select>
                 </div>
-
                 <div class="mb-3">
                   <label type="text" class="form-label">Cuenta</label>
-                  <!-- <input type="text" class="form-control" id="exampleInputPassword1"> -->
                   <table border="1" name="option_cuenta" id="option_cuenta">
-                    
                   </table>
                 </div>
-
-
-
-                <!-- <button type="submit" class="btn btn-primary">Ingresar</button> -->
-
                 <input type='button' class='' name='boton' id='boton' onclick='javascript:InsertCuenta()' value='Ingresar'>
-
               </form>
             </div>
+            <!-- DATOS DE CUENTAS -->
             <div class="col-lg-6" style="background-color:#FFF">
               <form action="modelo/boletocuentas.php" method="post">
                 <table class="table">
@@ -111,7 +153,6 @@ $selectcuentastotales= selectTotalGrupos();
               </form>
             </div>
           </div>
-
         </div>
       </div>
     </div>
@@ -120,7 +161,6 @@ $selectcuentastotales= selectTotalGrupos();
   </div>
   <!-- Option 1: Bootstrap Bundle with Popper -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-
   <script>
     function Ingresar(cod_grupo, cod_bloque, cod_rubro) {
       cod_cuenta = cod_cuenta.toString()
@@ -158,6 +198,43 @@ $selectcuentastotales= selectTotalGrupos();
     }
   </script>
 </body>
+
+<script>
+    function Ingresar(cod_grupo, cod_bloque, cod_rubro) {
+      cod_cuenta = cod_cuenta.toString()
+      var formData = 'cod_grupo=' + cod_grupo + '&cod_bloque=' + cod_bloque + '&cod_rubro=' + cod_rubro;
+
+      var ajax = nuevoAjax();
+      ajax.open("POST", "modelo/ingresarCuenta.php", true);
+      ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+      ajax.send(formData);
+
+      ajax.onreadystatechange = function() {
+        if (ajax.readyState == 4) {
+          var respuesta = ajax.responseText;
+          alert(respuesta)
+          //document.getElementById("informacion").innerHTML=respuesta; 
+        }
+      }
+    }
+
+    function nuevoAjax() {
+      var xmlhttp = false;
+      try {
+        xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
+      } catch (e) {
+        try {
+          xmlhttp = new ActiveXObject("Microsoft.XMLHTTP")
+        } catch (E) {
+          xmlhttp = false;
+        }
+      }
+      if (!xmlhttp && typeof XMLHttpRequest != "undefined") {
+        xmlhttp = new XMLHttpRequest();
+      }
+      return xmlhttp;
+    }
+</script>
 
 </html>
 <?php 

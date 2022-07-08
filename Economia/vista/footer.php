@@ -6,10 +6,7 @@
       <!-- Section: CTA -->
       <section class="">
         <p class="d-flex justify-content-center align-items-center">
-          <span class="me-3">Register for free</span>
-          <button type="button" class="btn btn-outline-light btn-rounded">
-            Sign up!
-          </button>
+          <span class="me-3">Instituto N° 20 T.A.S </span>
         </p>
       </section>
       <!-- Section: CTA -->
@@ -18,8 +15,7 @@
 
     <!-- Copyright -->
     <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
-      © 2020 Copyright:
-      <a class="text-white" href="https://mdbootstrap.com/">MDBootstrap.com</a>
+      © 2022 Copyright
     </div>
     <!-- Copyright -->
   </footer>
