@@ -1,6 +1,7 @@
 <?php
 include("modelo/conex.php");
 include("modelo/modelo.php");
+
 include("vista/header.php");
 include("vista/menu.php");
 $selectcuentastotales = selectTotalGrupos();
@@ -12,12 +13,14 @@ $selectcuentastotales = selectTotalGrupos();
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="">Modal title</h5>
+
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body" id="modal-body">
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
       </div>
     </div>
   </div>
@@ -36,6 +39,7 @@ $selectcuentastotales = selectTotalGrupos();
 
       </div>
       <div class="modal-footer">
+
       </div>
     </div>
   </div>
@@ -67,6 +71,7 @@ $selectcuentastotales = selectTotalGrupos();
                     while ($row = mysqli_fetch_assoc($rs)) {
 
                       echo '<option value="' . $row['cod_grupo'] . '">' . $row['nombre_grupo'] . '</option>';
+
                     }
                     ?>
                   </select>
@@ -74,7 +79,9 @@ $selectcuentastotales = selectTotalGrupos();
 
                 <div class="col-sm">
                   <label class="form-label">Bloque</label>
+
                   <select type="text" name="option_bloque" id="option_bloque" style="position:  relative;left: 3px;width: 200px; padding:.375rem .75rem">
+
 
                   </select>
                 </div>
@@ -82,12 +89,15 @@ $selectcuentastotales = selectTotalGrupos();
                 <div class="col-sm">
                   <label class="form-label">Rubro</label>
 
+
                   <select type="text" name="option_rubro" id="option_rubro" style="position:  relative;left: 11px;width: 200px; padding:.375rem .75rem">
+
 
                   </select>
                 </div>
 
                 <div class="mb-3">
+
                   <label class="titulo-table" type="text" class="form-label">Cuenta</label>
 
                   <table class="table table-bordered" border="1" name="option_cuenta" id="option_cuenta">
@@ -128,12 +138,14 @@ $selectcuentastotales = selectTotalGrupos();
                 <button class="btn btn-warning">Descargar Cuentas</button>
               </div>
             </form>
+
           </div>
         </div>
 
       </div>
     </div>
   </div>
+
 </div>
 </div>
 </div>
@@ -204,4 +216,5 @@ $selectcuentastotales = selectTotalGrupos();
 </html>
 <?php
 include("vista/footer.php");
+
 ?>
