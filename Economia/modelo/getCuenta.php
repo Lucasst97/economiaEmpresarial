@@ -5,7 +5,6 @@ $cod_rubro = $_POST['cod_rubro'];
 $cod_bloque = $_POST['cod_bloque'];
 $cod_grupo = $_POST['cod_grupo'];
 
-
 $queryC = "SELECT `cod_cuenta`, nombre_cuenta FROM cuenta WHERE cod_rubro = '$cod_rubro' and cod_bloque= '$cod_bloque' and cod_grupo= '$cod_grupo' ";
 $rsC = mysqli_query($conex, $queryC);
 
@@ -14,23 +13,62 @@ $html = "<th>Codigo</th><th>Cuenta</th><th></th>";
 $html =  $cod_grupo . $cod_bloque . $cod_rubro;
 
 while ($rowC = mysqli_fetch_assoc($rsC)) {
-
     $cod_cuenta = $rowC['cod_cuenta'];
-
-    $html .= "<tr><td>" . $rowC['nombre_cuenta'] . "</td><td><input type='button' class='' name='boton' id='boton' onclick='Modificar($cod_grupo, $cod_bloque, $cod_rubro, $cod_cuenta)' value='Modificar'></td><td><input type='button' class='' name='boton' id='boton' onclick='Eliminar($cod_grupo, $cod_bloque, $cod_rubro,$cod_cuenta)' value='Eliminar'></td></tr>";
-   
+    $html .= "<tr><td>" . $rowC['nombre_cuenta'] . "</td><td><input type='button' class='' name='boton' id='boton' onclick='Modificar($cod_grupo, $cod_bloque, $cod_rubro, $cod_cuenta)' value='Modificar'></td><td><input type='button' class='' name='boton' id='boton' onclick='EliminarCuenta($cod_grupo, $cod_bloque, $cod_rubro,$cod_cuenta)' value='Eliminar'></td></tr>";
 }
-
 
 echo $html;
 ?>
+<tr>
+    <td></td>
+    <td></td>
+    <td>
+        <input type='button' class='' name='boton' id='boton' onclick="InsertCuenta('<?php echo $cod_grupo ?>', '<?php echo $cod_bloque ?>', '<?php echo $cod_rubro ?>')" value='Ingresar'>
+    </td>
+</tr>
+
 <script>
+    function Modificar(cod_grupo, cod_bloque, cod_rubro, cod_cuenta) {
+        console.log(cod_grupo, cod_bloque, cod_rubro, cod_cuenta)
+        $('#ModalModificarCuenta').modal('show');
+        $.ajax({
+            type: "post",
+            url: "modelo/ModalModificarCuenta.php",
+            data: {
+                cod_bloque,
+                cod_rubro,
+                cod_grupo,
+                cod_cuenta
+            },
+            success: function(response) {
+                $('#modal-bodyI').html(response);
+            }
+        });
+    }
+
+    function InsertCuenta(cod_grupo, cod_bloque, cod_rubro) {
+        console.log(cod_grupo)
+        $('#ModalInsertCuenta').modal('show');
+        $.ajax({
+            type: "post",
+            url: "modelo/ModalinsertCuenta.php",
+            data: {
+                cod_bloque,
+                cod_rubro,
+                cod_grupo
+            },
+            success: function(response) {
+                $('#modal-body').html(response);
+            }
+        });
+    }
+
     function Eliminar(cod_grupo, cod_bloque, cod_rubro, cod_cuenta) {
         console.log(cod_grupo, cod_bloque, cod_rubro, cod_cuenta)
 
-        var send= 
-        cod_cuenta= cod_cuenta.toString()
-        var formData = 'cod_grupo=' + cod_grupo + '&cod_bloque=' + cod_bloque + '&cod_rubro=' + cod_rubro + '&cod_cuenta='+cod_cuenta;
+        var send =
+            cod_cuenta = cod_cuenta.toString()
+        var formData = 'cod_grupo=' + cod_grupo + '&cod_bloque=' + cod_bloque + '&cod_rubro=' + cod_rubro + '&cod_cuenta=' + cod_cuenta;
 
         //var ajax = nuevoAjax();
         var ajax = nuevoAjax();
@@ -38,7 +76,7 @@ echo $html;
         ajax.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         ajax.send(formData);
         /* "cod_grupo="+cod_grupo, "cod_bloque="+cod_bloque, "cod_rubro="+cod_rubro,"cod_cuenta="+cod_cuenta */
-        
+
         ajax.onreadystatechange = function() {
             if (ajax.readyState == 4) {
                 var respuesta = ajax.responseText;
@@ -48,31 +86,14 @@ echo $html;
         }
     }
 
-    function Modificar(cod_grupo, cod_bloque, cod_rubro, cod_cuenta) {
 
-        //cCuenta=cod_cuenta.toString(); 
-        //alert(typeof(cod_cuenta));
-        //console.log(cod_cuenta+", "+typeof(cod_cuenta));
-        /* num = parseInt(cod_cuenta,10);
-        console.log('jña: '+num); */
-
-        /* if (typeof(cod_cuenta=='number')) {
-            cod_cuenta= cod_cuenta.toString();
-            console.log("tipo de dato cambiado");
-            console.log(typeof(cod_cuenta));
-            vara = (cod_cuenta+5);
-            console.log(vara);
-        } */
-        //console.log("cod: " + cod_cuenta, typeof(cod_cuenta));
+    //----------------------------------------------------------------------
+    //FUNCION NO UTILIZADA--------------------------------------------------
+    function pruebaModificar(cod_grupo, cod_bloque, cod_rubro, cod_cuenta) {
         if (cod_cuenta > 0 && cod_cuenta < 10) {
             codAux = '00';
-            /* console.log("cuenta menor a 10");
-            console.log("1: ",typeof(cod_cuenta)); */
-
             cod_cuenta = cod_cuenta.toString();
             //console.log("2: ", cod_cuenta, typeof(cod_cuenta));
-
-
             cod_cuenta = codAux + cod_cuenta;
             //console.log("3: tipo: ", typeof(cod_cuenta));
             console.log("Cod Cuenta: ", cod_cuenta);
@@ -83,12 +104,12 @@ echo $html;
                 //console.log(typeof(cod_cuenta));
 
                 cod_cuenta = cod_cuenta.toString();
-                /* console.log(typeof(cod_cuenta));
-                console.log(cod_cuenta); */
+                //console.log(typeof(cod_cuenta));
+                //console.log(cod_cuenta);
 
                 cod_cuenta = codAux + cod_cuenta;
-                /* console.log(typeof(cod_cuenta));
-                console.log(cod_cuenta); */
+                // console.log(typeof(cod_cuenta));
+                //console.log(cod_cuenta);
                 console.log("Cod Cuenta: ", cod_cuenta);
             } else {
                 console.log("...");
@@ -98,12 +119,12 @@ echo $html;
                     //console.log(typeof(cod_cuenta));
 
                     cod_cuenta = cod_cuenta.toString();
-                    /* console.log(typeof(cod_cuenta));
-                    console.log(cod_cuenta); */
+                    // console.log(typeof(cod_cuenta));
+                    //console.log(cod_cuenta);
 
                     cod_cuenta = codAux + cod_cuenta;
-                    /* console.log(typeof(cod_cuenta));
-                    console.log(cod_cuenta); */
+                    //console.log(typeof(cod_cuenta));
+                    //console.log(cod_cuenta);
                     console.log("Cod Cuenta: ", cod_cuenta);
                 } else {
                     console.log("Codigo de Cuenta Incorrecto");
@@ -124,9 +145,6 @@ echo $html;
             }
         } */
     }
-
-
-
 
     function nuevoAjax() {
         var xmlhttp = false;
