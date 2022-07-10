@@ -15,6 +15,7 @@ $codCuenta = $rowC['MAX(cod_cuenta)'];
 $codCuenta = $codCuenta+1;
 
 $queryI= "INSERT INTO `cuenta`(`cod_cuenta`, `nombre_cuenta`, `cod_rubro`, `cod_bloque`, `cod_grupo`) VALUES ('$codCuenta','$nombre_cuenta','$cod_rubro','$cod_bloque','$cod_grupo')";
+echo $queryI;
 $insert = mysqli_query($conex, $queryI)
 
 

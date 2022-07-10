@@ -14,9 +14,9 @@ function conectar() {
 }
 
 //Funcion para insertar datos en la base de datos
-function desconectar($conex) {
-    mysqli_close($conex);
-}
+// function desconectar($conex) {
+//     mysqli_close($conex);
+// }
 
 function selectTotalGrupos() {
     $conex = conectar();
