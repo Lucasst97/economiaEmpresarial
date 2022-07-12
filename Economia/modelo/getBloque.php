@@ -15,7 +15,7 @@
 	while($rowB = mysqli_fetch_assoc($rsB)){
 		$html.= "<option value='".$rowB['cod_bloque']."'>".$rowB['nombre_bloque']."</option>";
 	}
-	
+
 	/* ===Se imprimen los options generados para que sean leídos como HTML y 
 		la funcion encargada lo tome y lo inserte en el select de Bloques=== */
 	echo $html;

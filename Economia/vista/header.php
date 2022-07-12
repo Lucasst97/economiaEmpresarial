@@ -9,8 +9,6 @@
   <script src="https://code.jquery.com/jquery-latest.js"></script>
   <script language="javascript" src="js/script.js"></script>
   <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">

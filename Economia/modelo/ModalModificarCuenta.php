@@ -6,6 +6,7 @@ $grupoCuenta = $_POST['cod_grupo'];
 $bloqueCuenta = $_POST['cod_bloque'];
 $rubroCuenta = $_POST['cod_rubro'];
 $cuentaCuenta = $_POST['cod_cuenta'];
+
 ?>
 
 <!-- ===Formulario para tomar la modificacion de la cuenta=== -->
