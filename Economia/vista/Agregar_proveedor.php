@@ -1,16 +1,12 @@
 <?php
     include("../modelo/conex.php");
     include("../modelo/modelo.php");
-    $SeleccionTotalDeCuentas=SeleccionTotalDeCuentas();
+    $responsable_iva= responsable_iva();
+
 ?>
 <!-- modal formulario para ingresar un asiento contable -->
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<script>
-    $(document).ready(function() {
-    $('.js-example-basic-single').select2();
-});
-</script>
 <style>
     .select-cuenta{
         display: block;
@@ -35,14 +31,34 @@
         <h5 class="modal-title" id="exampleModalLabel"></h5> 
     </div>
     <div>
-        <form action="modelo/insertar_libro_diario.php" method="POST">
+        <form action="modelo/modelo_libro_diario.php" method="POST">
             <div class="form-group mt-1">
                 <label for="fecha">CUIT </label>
-                <input type="date" class="form-control" name="fecha" id="fecha" required>
+                <input type="number" class="form-control" name="cuit_proveedor" id="cuit_cliente" required>
             </div>
             <div class="form-group mt-3">
                 <label for="numero_asiento">Nombre / Razon social</label>
-                <input type="number" class="form-control" name="numero_asiento" id="numero_asiento" required>
+                <input type="text" class="form-control" name="razon_social_proveedor" id="razon_social_cliente" required>
+            </div>
+            <div class="form-group mt-3">
+                <label for="numero_asiento">Situacion Tributaria</label>
+                <select name="sit_tributaria">
+                    <option value="">Eliga la opcion</option>
+                    <?php while($reg=mysqli_fetch_array($responsable_iva)){
+                         ?>
+                        <input type="hidden" name="sit_proveedor" value="<?php echo $reg['id_sitTribut']?>">
+                    <option>
+                        <?php echo $reg['sitTributaria'];?>
+                    </option>
+                    <?php                   
+                        }
+
+                    ?>
+                
+                </select>
+            </div>
+            <div class="form-group mt-3">
+                <button type="submit" class="btn btn-primary">Agregar proveedor</button>
             </div>
         </form>
     </div>
