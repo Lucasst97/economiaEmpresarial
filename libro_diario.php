@@ -18,7 +18,6 @@ include("vista/menu.php");
         });
     }
 </script>
-
 <!-- Modal -->
 <div class="modal fade" id="Agregar_libro_diario" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -56,7 +55,7 @@ include("vista/menu.php");
     <div class="row">
         <div class="col-12">
             <div class="table">
-                <table class="table table-hover table-striped table-bordered">
+                <table class="table table-hover table-striped table-bordered bg-light">
                     <thead class="">
                         <tr>
                             <td rowspan="2" class="col-1">N° Asiento</td>
