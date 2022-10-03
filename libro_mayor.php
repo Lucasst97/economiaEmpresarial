@@ -54,7 +54,7 @@ include("vista/menu.php");
     <div class="row">
         <div class="col-12">
             <div class="table">
-                <table class="table table-hover table-striped table-bordered">
+                <table class="table table-hover table-striped table-bordered bg-light">
                     <thead class="">
                         <tr>
                             <td rowspan="2">Fecha</td>
