@@ -19,6 +19,13 @@ class Libro_diario{
         $result = mysqli_query($conex, $sql);
         return $result;      
     }
+
+    function TodosLosAsientos(){
+        $conex= conectar();
+        $sql="";
+        $result= mysqli_query($conex, $sql);
+        return $result;
+    }
 }
 
 

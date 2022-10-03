@@ -1,7 +1,7 @@
 
     body {
       font-family: 'Montserrat', sans-serif;
-      background-image: url('elements/background.jpg');
+      background-image: url('../elements/background.jpg');
       background-repeat: no-repeat;
       background-position: center;
       background-size: auto;
@@ -69,6 +69,4 @@
       color: #fff;
       background-color: #0d6efd;
       border-color: #0d6efd;
-
   }
-
