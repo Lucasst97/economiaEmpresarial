@@ -7,7 +7,7 @@ $cod_bloque = $_POST['cod_bloque'];
 $cod_grupo = $_POST['cod_grupo'];
 
 /* ===Se genera la Query para traer las cuentas que pertenecen al rubro seleccionado=== */
-$queryC = "SELECT `cod_cuenta`, nombre_cuenta, saldo FROM cuenta WHERE cod_rubro = '$cod_rubro' and cod_bloque= '$cod_bloque' and cod_grupo= '$cod_grupo' ";
+$queryC = "SELECT `cod_cuenta`, nombre_cuenta, saldoCuenta FROM cuenta WHERE cod_rubro = '$cod_rubro' and cod_bloque= '$cod_bloque' and cod_grupo= '$cod_grupo' ";
 $rsC = mysqli_query($conex, $queryC);
 
 /* ===Se genera el primer option estatico para el select de Rubros=== */
@@ -19,7 +19,7 @@ $html =  $cod_grupo . $cod_bloque . $cod_rubro;
 /* ===Se generan datos dinamicos para la tabla de cuentas=== */
 while ($rowC = mysqli_fetch_assoc($rsC)) {
     $cod_cuenta = $rowC['cod_cuenta'];
-    $saldo = $rowC['saldo'];
+    $saldo = $rowC['saldoCuenta'];
     $html .= "<tr><td style='text-align:left;'>" . $rowC['nombre_cuenta'] . "</td><td><input type='button' class='btn btn-primary' name='boton' id='boton' onclick='Modificar($cod_grupo, $cod_bloque, $cod_rubro, $cod_cuenta)' value='Modificar'></td><td><input type='button' class='btn btn-primary' name='boton' id='boton' onclick='EliminarCuenta($cod_grupo, $cod_bloque, $cod_rubro,$cod_cuenta,$saldo)' value='Eliminar'></td></tr>";
 }
 
