@@ -30,7 +30,7 @@ function selectTotalGruposPdf() {
 
 function SeleccionTotalDeCuentas(){
     $conex = conectar();
-    $sql = "SELECT cod_grupo, cod_bloque, cod_rubro, cod_cuenta, nombre_cuenta FROM cuenta order by cod_grupo, cod_bloque, cod_rubro, cod_cuenta";
+    $sql = "SELECT id_cuenta, cod_grupo, cod_bloque, cod_rubro, cod_cuenta, nombre_cuenta FROM cuenta order by cod_grupo, cod_bloque, cod_rubro, cod_cuenta";
     $result = mysqli_query($conex, $sql);
     return $result;
 }
