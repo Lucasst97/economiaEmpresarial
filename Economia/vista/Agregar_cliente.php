@@ -42,14 +42,14 @@
             </div>
             <div class="form-group mt-3">
                 <label for="numero_asiento">Situacion Tributaria</label>
-                <select name="sit_tributaria">
+                <select class="form-select" name="sit_tributaria">
                     <option value="">Eliga la opcion</option>
                     <?php
                         while($reg=mysqli_fetch_array($responsable_iva)){ ?>
-                    <option>
+                    <option value="<?php echo $reg['id_sitTribut'] ?>">
                         <?php echo $reg['sitTributaria']; ?>
                     </option>
-                    <input type="hidden" name="sit_cliente" value="<?php echo $reg['id_sitTribut'] ?>">
+
                     <?php
                         }
                     ?>
