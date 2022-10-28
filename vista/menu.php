@@ -15,7 +15,28 @@
           </li>
 
           <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle text-light menu-contable" style="padding-right: 30px" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      Balance
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                      <li><a class="dropdown-item menu-contable" href="#">Nuevo Balance</a></li>
+                      <li><a class="dropdown-item menu-contable" href="#">Historial</a></li>
+                    </ul>
+                  </li>
 
+          <li class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle text-light menu-contable" style="padding-right: 30px" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Libros
+                      </a>
+                      <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item menu-contable" href="libro_diario.php">Libro Diario</a></li>
+                        <li><a class="dropdown-item menu-contable" href="libro_mayor.php">Libro Mayor</a></li>
+                        <li><a class="dropdown-item menu-contable" href="libro_compra.php">Libro de Compras</a></li>
+                        <li><a class="dropdown-item menu-contable" href="libro_venta.php">Libro de Ventas</a></li>
+                      </ul>
+                    </li>
+
+          <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle text-light menu-contable" style="padding-right: 30px" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Plan de Cuentas
             </a>
@@ -24,30 +45,6 @@
               <li><a class="dropdown-item menu-contable" href="tabla_valores.php">Descargar</a></li>
             </ul>
           </li>
-
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle text-light menu-contable" style="padding-right: 30px" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Balance
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item menu-contable" href="#">Nuevo Balance</a></li>
-              <li><a class="dropdown-item menu-contable" href="#">Historial</a></li>
-            </ul>
-          </li>
-
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle text-light menu-contable" style="padding-right: 30px" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Libros
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item menu-contable" href="libro_diario.php">Libro Diario</a></li>
-              <li><a class="dropdown-item menu-contable" href="#">Libro Mayor</a></li>
-              <li><a class="dropdown-item menu-contable" href="#">Libro de Compras</a></li>
-              <li><a class="dropdown-item menu-contable" href="#">Libro de Ventas</a></li>
-            </ul>
-          </li>
-
-
         </ul>
       </div>
     </div>
