@@ -131,11 +131,12 @@ $SeleccionTotalDeCuentas = SeleccionTotalDeCuentas();
     var debe = 0;
     var haber = 0;
     var i = 0
-    console.log(x);
+    
     function VerificarSaldo(){
-        var saldo = document.getElementById('saldo_cuenta_'+i).value;
-        console.log(x);
+        var saldo = document.getElementById('saldo_cuenta_'+i).value; 
         var tipo = document.getElementById('tipo_cuenta_'+i).value;
+       
+       
         for (i; i == x; i++) {
             if (tipo[i].value == 0) {
                 debe = debe + parseInt(saldo[i].value);
@@ -146,13 +147,30 @@ $SeleccionTotalDeCuentas = SeleccionTotalDeCuentas();
         if (debe == haber) {
             Swal.fire({
                 text:'El debe y el haber SI coinciden.',
-                confirmButtonText: 'Save'
-                });
+                confirmButtonText: 'Save',
+                denyButtonText: `Don't save`,
+                }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    Swal.fire('Saved!', '', 'success')
+                } else if (result.isDenied) {
+                    Swal.fire('Changes are not saved', '', 'info')
+                }
+                })
+              
         } else {
             Swal.fire({
                 text:'El debe y el haber NO coinciden.',
-                confirmButtonText: 'Save'
-                });
+                confirmButtonText: 'Save',
+                denyButtonText: `Don't save`,
+                }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    Swal.fire('Saved!', '', 'success')
+                } else if (result.isDenied) {
+                    Swal.fire('Changes are not saved', '', 'info')
+                }
+                })
         }
     }
 </script>

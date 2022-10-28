@@ -16,7 +16,9 @@ function conectar() {
 
 function selectTotalGrupos() {
     $conex = conectar();
-    $sql = "SELECT cod_grupo, cod_bloque, cod_rubro, cod_cuenta, nombre_cuenta, saldoCuenta FROM cuenta order by cod_grupo, cod_bloque, cod_rubro, cod_cuenta LIMIT 10";
+
+    $sql = "SELECT cod_grupo, cod_bloque, cod_rubro, cod_cuenta, nombre_cuenta, saldo_cuenta FROM cuenta order by cod_grupo, cod_bloque, cod_rubro, cod_cuenta LIMIT 10";
+
     $result = mysqli_query($conex, $sql);
     return $result;
 }
@@ -30,7 +32,9 @@ function selectTotalGruposPdf() {
 
 function SeleccionTotalDeCuentas(){
     $conex = conectar();
-    $sql = "SELECT cod_grupo, cod_bloque, cod_rubro, cod_cuenta, nombre_cuenta FROM cuenta order by cod_grupo, cod_bloque, cod_rubro, cod_cuenta";
+
+    $sql = "SELECT id_cuenta, cod_grupo, cod_bloque, cod_rubro, cod_cuenta, nombre_cuenta FROM cuenta order by cod_grupo, cod_bloque, cod_rubro, cod_cuenta";
+
     $result = mysqli_query($conex, $sql);
     return $result;
 }
