@@ -34,9 +34,7 @@ $selectcuentastotales = selectTotalGrupos();
                                         $cod_bloque = $reg['cod_bloque'];
                                         $cod_rubro = $reg['cod_rubro'];
                                         $cod_cuenta = $reg['cod_cuenta'];
-
-                                        $saldo = $reg['saldo_cuenta'];
-
+                                        $saldo = $reg['saldo'];
                                         $tipoSaldo = '-';
                                         $cero = '0';
 
