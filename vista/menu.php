@@ -15,7 +15,6 @@
           </li>
 
           <li class="nav-item dropdown">
-
             <a class="nav-link dropdown-toggle text-light menu-contable" style="padding-right: 30px" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Plan de Cuentas
             </a>
@@ -46,7 +45,6 @@
               <li><a class="dropdown-item menu-contable" href="#">Libro de Ventas</a></li>
             </ul>
           </li>
-
 
         </ul>
       </div>

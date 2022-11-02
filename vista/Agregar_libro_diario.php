@@ -8,8 +8,7 @@
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
- 
-
+   
 
     function AgregarClienteLibroDiario() {
         $("#Modal_libro_diario").modal('show');
@@ -32,7 +31,6 @@
             }
         });
     }
-
     function AgregarCuentaLibroDiario() {
         $("#Modal_libro_diario").modal('show');
         $.ajax({
@@ -43,7 +41,6 @@
             }
         });
     }
-
 
 </script>
 <style>
@@ -70,12 +67,10 @@
         <h5 class="modal-title" id="exampleModalLabel"></h5>
         <button class="btn btn-info ml-3" onclick="javascript:AgregarClienteLibroDiario()">Agregar Cliente</button>
         <button class="btn btn-info ml-3" onclick="javascript:AgregarProveedorLibroDiario()">Agregar Proveedor</button>
-
         <button class="btn btn-info ml-3" onclick="javascript:AgregarCuentaLibroDiario()">Agregar Cuenta</button>
     </div>
     <div class="row">
        
         
-
     </div>
 </div>
