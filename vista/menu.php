@@ -10,8 +10,18 @@
       </button>
       <div class="collapse navbar-collapse position-absolute end-0" id=" navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0 pull-xs-left">
-          <li class="nav-item">
-            <a class="nav-link active text-light menu-contable" style="padding-right: 30px" aria-current="page" href="index.php">Inicio</a>
+
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-light menu-contable" style="padding-right: 30px" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Libros
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li><a class="dropdown-item menu-contable" href="libro_diario.php">Libro Diario</a></li>
+              <li><a class="dropdown-item menu-contable" href="#">Libro Mayor</a></li>
+              <li><a class="dropdown-item menu-contable" href="#">Libro de Compras</a></li>
+              <li><a class="dropdown-item menu-contable" href="#">Libro de Ventas</a></li>
+            </ul>
           </li>
 
           <li class="nav-item dropdown">
@@ -33,19 +43,9 @@
               <li><a class="dropdown-item menu-contable" href="#">Historial</a></li>
             </ul>
           </li>
-
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle text-light menu-contable" style="padding-right: 30px" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Libros
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item menu-contable" href="libro_diario.php">Libro Diario</a></li>
-              <li><a class="dropdown-item menu-contable" href="#">Libro Mayor</a></li>
-              <li><a class="dropdown-item menu-contable" href="#">Libro de Compras</a></li>
-              <li><a class="dropdown-item menu-contable" href="#">Libro de Ventas</a></li>
-            </ul>
+          <li class="nav-item">
+            <a class="nav-link active text-light menu-contable" style="padding-right: 30px" aria-current="page" href="index.php">Inicio</a>
           </li>
-
         </ul>
       </div>
     </div>
