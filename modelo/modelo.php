@@ -16,25 +16,21 @@ function conectar() {
 
 function selectTotalGrupos() {
     $conex = conectar();
-
     $sql = "SELECT cod_grupo, cod_bloque, cod_rubro, cod_cuenta, nombre_cuenta, saldo_cuenta FROM cuenta order by cod_grupo, cod_bloque, cod_rubro, cod_cuenta LIMIT 10";
-
     $result = mysqli_query($conex, $sql);
     return $result;
 }
 
 function selectTotalGruposPdf() {
     $conex = conectar();
-    $sql = "SELECT cod_grupo, cod_bloque, cod_rubro, cod_cuenta, nombre_cuenta, saldo FROM cuenta order by cod_grupo, cod_bloque, cod_rubro, cod_cuenta";
+    $sql = "SELECT cod_grupo, cod_bloque, cod_rubro, cod_cuenta, nombre_cuenta, saldo_cuenta FROM cuenta order by cod_grupo, cod_bloque, cod_rubro, cod_cuenta";
     $result = mysqli_query($conex, $sql);
     return $result;
 }
 
 function SeleccionTotalDeCuentas(){
     $conex = conectar();
-
     $sql = "SELECT id_cuenta, cod_grupo, cod_bloque, cod_rubro, cod_cuenta, nombre_cuenta FROM cuenta order by cod_grupo, cod_bloque, cod_rubro, cod_cuenta";
-
     $result = mysqli_query($conex, $sql);
     return $result;
 }
@@ -45,5 +41,24 @@ function responsable_iva(){
     $result = mysqli_query($conex, $sql);
     return $result;
 }
+
+function SelectCuentasLibroDiario(){
+    $conex = conectar();
+    $sql = "SELECT a.numAsiento 'asiento', a.fecha 'fecha', c.nombre_cuenta 'cuenta', c.cod_grupo 'cod_grupo', c.cod_bloque 'cod_bloque',
+     c.cod_rubro 'cod_rubro', c.cod_cuenta 'cod_cuenta', ac.tipo_saldo 'tipo_saldo', ac.saldo_ac 'saldo' 
+    FROM asiento_cuenta ac , asientos a, cuenta c 
+    WHERE a.numAsiento = ac.numAsiento and ac.id_cuenta = c.id_cuenta 
+    ORDER BY a.fecha DESC";
+    $result = mysqli_query($conex, $sql);
+    return $result;
+}
+
+function listaUsuario(){
+    $conex = conectar();
+    $sql = "SELECT * FROM tu_vieja";
+    $result = mysqli_query($conex, $sql);
+    return $result;
+}
+
 
 ?>

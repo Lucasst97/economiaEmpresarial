@@ -1,0 +1,38 @@
+CREATE PROCEDURE economia20.AsientoJsonArray(IN asientoJson JSON)
+
+BEGIN 
+	DECLARE vJsonEsValido INT;
+    DECLARE vItems INT;
+    DECLARE vIndex INT DEFAULT 0;
+    
+    DECLARE id_cuenta INT;
+    DECLARE tipo_saldo VARCHAR(4);
+    DECLARE saldo_ac DECIMAL(11,2);
+   
+   	SET vJsonEsValido = JSON_VALID(asientoJson);
+   
+	IF vJsonEsValido = 0 THEN 
+
+        SELECT "JSON suministrado no es válido";
+    ELSE 
+    	
+    	
+        SET vItems = JSON_LENGTH(asientoJson);
+    	
+
+        IF vItems > 0 THEN 
+    		
+	        WHILE vIndex < vItems DO
+	            
+	        	SET id_cuenta = JSON_UNQUOTE(JSON_EXTRACT(asientoJson, CONCAT('$[', vIndex, '].cuenta')));
+	        	SET tipo_saldo = JSON_UNQUOTE(JSON_EXTRACT(asientoJson, CONCAT('$[', vIndex, '].saldo')));
+	        	SET saldo_ac = JSON_UNQUOTE(JSON_EXTRACT(asientoJson, CONCAT('$[', vIndex, '].tipo')));
+	               
+	        	select id_cuenta as 'Cuenta', tipo_saldo as 'TIPO SALDO',  saldo_ac as 'SALDO' ;
+	        	
+	        	SET vIndex = vIndex + 1;		
+	               
+	        END WHILE;
+        END IF;
+	END IF;
+END
