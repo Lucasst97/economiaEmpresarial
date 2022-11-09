@@ -44,6 +44,9 @@
             </ul>
           </li>
           <li class="nav-item">
+            <a class="nav-link active text-light menu-contable" style="padding-right: 30px" aria-current="page" href="perfil.php">Perfil</a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link active text-light menu-contable" style="padding-right: 30px" aria-current="page" href="index.php">Inicio</a>
           </li>
         </ul>

@@ -4,9 +4,7 @@
     $responsable_iva= responsable_iva();
 
 ?>
-<!-- modal formulario para ingresar un asiento contable -->
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
 <style>
     .select-cuenta{
         display: block;
@@ -26,36 +24,45 @@
         transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
     }
 </style>
+
+
 <div class="container">
-    <div>
-        <h5 class="modal-title" id="exampleModalLabel"></h5> 
-    </div>
-    <div>
-        <form action="modelo/modelo_libro_diario.php" method="POST">
-            <div class="form-group mt-1">
-                <label for="fecha">CUIT </label>
-                <input type="number" class="form-control" name="cuit_proveedor" id="cuit_cliente" required>
-            </div>
-            <div class="form-group mt-3">
-                <label for="numero_asiento">Nombre / Razon social</label>
-                <input type="text" class="form-control" name="razon_social_proveedor" id="razon_social_cliente" required>
-            </div>
-            <div class="form-group mt-3">
-                <label for="numero_asiento">Situacion Tributaria</label>
-                <select class="form-select" name="sit_tributaria">
-                    <option value="">Eliga la opcion</option>
-                    <?php while($reg=mysqli_fetch_array($responsable_iva)){?>    
-                        <option value="<?php echo $reg['id_sitTribut']?>">
-                            <?php echo $reg['sitTributaria'];?>
-                        </option>
-                    <?php                   
-                        }
-                    ?>
-                </select>
-            </div>
-            <div class="form-group mt-3">
-                <button type="submit" class="btn btn-primary">Agregar proveedor</button>
-            </div>
-        </form>
+    <div class="row">
+        <div class="col-12">
+            <h3 class="text-center">Ingrese un nuevo proveedor en el sistema</h3>
+        </div>
+        <div class="col-1"></div>
+        <div class="col-5">
+            <form action="modelo/nuevo_proveedor.php" method="POST">
+                <div class="form-group mt-1">
+                    <label>CUIT </label>
+                    <input type="number" class="form-control" name="cuit_proveedor" id="cuit_proveddor" required>
+                </div>
+                <div class="form-group mt-3">
+                    <label>Nombre / Razon social</label>
+                    <input type="text" class="form-control" name="razon_social_proveedor" id="razon_social_proveddor" required>
+                </div>
+                <div class="form-group mt-3">
+                    <label>Situacion Tributaria</label>
+                    <select class="form-select" name="sit_tributaria">
+                        <option value="">Eliga la opcion</option>
+                        <?php while($reg=mysqli_fetch_array($responsable_iva)){?>    
+                            <option value="<?php echo $reg['id_sitTributaria']?>">
+                                <?php echo $reg['sitTributaria'];?>
+                            </option>
+                        <?php                   
+                            }
+                        ?>
+                    </select>
+                </div>
+                <div class="form-group mt-3">
+                    <button type="submit" class="btn btn-primary">Agregar proveedor</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-5" style="display: flex;justify-content: center;align-items: center;">
+            <img style="width:200px"src="elements/proveedor.png" alt="">
+        </div>
+        <div class="col-1"></div>
     </div>
 </div>
