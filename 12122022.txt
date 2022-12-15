@@ -1,0 +1,771 @@
+---CREAR VISTA PARA QUE EN BASE A LOS ASIENTOS(TABLA ASIENTO_CUENTA) SE ACTUALICE EL SALDO DE UNA DETERMINADA CUENTA(TABLA CUENTA)----
+
+Acá vemos las cuentas y su saldo(CONSULTA "NORMAL")
+SELECT cuenta.nombre_cuenta, cuenta.saldo_cuenta FROM cuenta 
+
+
+QUERY QUE SUMA LOS SALDOS DE LAS CUENTAS DE LOS ASIENTOS PARA OBTENER EL SALDO TOTAL DE LA CUENTA. (SE VAN A VER SOLO LAS QUE TIENEN ALGÚN SALDO PROVISTO EN ALGÚN ASIENTO PORQUE LAS OTRAS ESTÁN EN $0)
+SELECT c.id_cuenta'IdCuenta', c.nombre_cuenta'Cuenta', SUM(ac.saldo_ac) 'Saldo' FROM asiento_cuenta ac, cuenta c WHERE ac.id_cuenta = c.id_cuenta GROUP BY c.nombre_cuenta;
+
+---CREAMOS VISTA DE ESE QUERY:---
+CREATE VIEW saldoCuentas AS
+SELECT c.id_cuenta'IdCuenta', c.nombre_cuenta'Cuenta', SUM(ac.saldo_ac) 'Saldo' FROM asiento_cuenta ac, cuenta c WHERE ac.id_cuenta = c.id_cuenta GROUP BY c.nombre_cuenta;
+
+---HACEMOS UN SELECT DE LA VISTA PARA VER SU CONTENIDO--------
+SELECT * FROM saldoCuentas;
+
+
+.........................................................................................................................................................................................................................................
+
+
+VER GRUPO Y RUBRO
+
+
+SELECT r.nombre_rubro'Rubro', g.nombre_grupo 
+FROM rubro r, grupo g 
+WHERE r.cod_grupo = g.cod_grupo;
+
+
+SELECT r.nombre_rubro ,c.saldo_cuenta
+FROM cuenta c, rubro r 
+WHERE r.cod_rubro = c.cod_rubro
+GROUP BY r.nombre_rubro
+
+
+
+SELECT c.cod_rubro, c.cod_bloque ,SUM(c.saldo_cuenta)'Saldo total'
+FROM cuenta c
+WHERE c.cod_rubro = 1
+and c.cod_bloque = 0;
+
+SELECT c.cod_rubro, c.cod_bloque ,r.nombre_rubro,SUM(c.saldo_cuenta)'Saldo total' FROM cuenta c, rubro r WHERE c.cod_rubro = 1 and c.cod_bloque = 1 and r.cod_rubro = c.cod_rubro GROUP BY c.cod_rubro, c.cod_bloque ,r.nombre_rubro;
+
+SELECT saldo_cuenta FROM `cuenta` WHERE cod_rubro = 1 and cod_bloque = 1 AND cod_grupo = 1;
+
+
+
+SALDO DE TODAS LAS CUENTAS que pertenecen al rubro bloque y grupo 1
+
+SELECT SUM(saldo_cuenta) FROM `cuenta` WHERE cod_rubro = 1 and cod_bloque = 1 AND cod_grupo = 1;
+
+
+Cuentas del rubro Caja y Bancos- Activo C
+SELECT c.nombre_cuenta, c.saldo_cuenta , r.nombre_rubro
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 1 
+AND c.cod_grupo = 1
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Caja y Bancos';
+
+
+SUM TOTAL
+SELECT c.nombre_cuenta, SUM(c.saldo_cuenta)'Total Rubro' , r.nombre_rubro
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 1 
+AND c.cod_grupo = 1
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Caja y Bancos';
+
+
+SELECT c.nombre_cuenta,c.saldo_cuenta , r.nombre_rubro
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 1 
+AND c.cod_grupo = 1
+and r.cod_rubro = c.cod_rubro
+AND c.cod_cuenta = 1
+GROUP BY c.nombre_cuenta
+
+UNION de los diferentes rubros del activo
+
+SELECT c.nombre_cuenta, c.saldo_cuenta , r.nombre_rubro
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 1 
+AND c.cod_grupo = 1
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Caja y Bancos'
+UNION
+SELECT c.nombre_cuenta, c.saldo_cuenta , r.nombre_rubro
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 1 
+AND c.cod_grupo = 1
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Inversiones Temporarias';
+
+
+Acá iria la suma de todas las cuentas de un determinado rubro
+
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 1 
+AND c.cod_grupo = 1
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Caja y Bancos'
+
+
+
+----------Usando UNIONS ACTIVO CORRIENTE---------------------------------------
+
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 1 
+AND c.cod_grupo = 1
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Caja y Bancos'
+UNION 
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 1 
+AND c.cod_grupo = 1
+AND r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Inversiones Temporarias'
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 1 
+AND c.cod_grupo = 1
+AND r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Creditos por Ventas'
+and r.cod_rubro = 3 /*Excepción porque hay 2 rubros que se llaman así el Activo C y NO c*/
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 1 
+AND c.cod_grupo = 1
+AND r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Otros Creditos'
+and r.cod_rubro = 4 /*Excepción porque hay 2 rubros que se llaman así el Activo C y NO c*/
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 1 
+AND c.cod_grupo = 1
+AND r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Bienes de Cambio'
+and r.cod_rubro = 5 /*Excepción porque hay 2 rubros que se llaman Bienes de Cambio en el Activo C y NO c*/
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 1 
+AND c.cod_grupo = 1
+AND r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Otros Activos 01'
+and r.cod_rubro = 6 /*CAMBIO DE NOMBRE AL RUBRO*/
+
+
+
+---------Existen Excepciones en los RUBROS DEL Activo Corriente, No Corriente y Pasivo---------------- 
+
+-------------------VIEW---------------------------------------------------------------------------------------
+CREATE VIEW activocorriente saldo AS
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 1 
+AND c.cod_grupo = 1
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Caja y Bancos'
+UNION 
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 1 
+AND c.cod_grupo = 1
+AND r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Inversiones Temporarias'
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 1 
+AND c.cod_grupo = 1
+AND r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Creditos por Ventas'
+and r.cod_rubro = 3 /*Excepción porque hay 2 rubros que se llaman así el Activo C y NO c*/
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 1 
+AND c.cod_grupo = 1
+AND r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Otros Creditos'
+and r.cod_rubro = 4 /*Excepción porque hay 2 rubros que se llaman así el Activo C y NO c*/
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 1 
+AND c.cod_grupo = 1
+AND r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Bienes de Cambio'
+and r.cod_rubro = 5 /*Excepción porque hay 2 rubros que se llaman Bienes de Cambio en el Activo C y NO c*/
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 1 
+AND c.cod_grupo = 1
+AND r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Otros Activos 01'
+and r.cod_rubro = 6 /*CAMBIO DE NOMBRE AL RUBRO*/
+
+
+--------------------CONSULTA DEL VALOR TOTAL DE LA VIEW(SUMA DE TODOS LOS RUBROS)-----------------------------------------
+SELECT * FROM `activocorrientesaldo`;
+SELECT SUM(`Total`) FROM `activocorrientesaldo`
+
+
+
+--------------------Usando UNIONS ACTIVO NO CORRIENTE------------------------------------------------------------------------------
+SOLUCIONAR PROBLEMA CON OTROS ACTIVOS Y HACER VISTA
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 2 
+AND c.cod_grupo = 1
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Creditos por Ventas'
+AND r.cod_rubro = 1
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 2 
+AND c.cod_grupo = 1
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Otros Creditos'
+AND r.cod_rubro = 2
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 2 
+AND c.cod_grupo = 1
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Bienes de Cambio'
+AND r.cod_rubro = 3
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 2 
+AND c.cod_grupo = 1
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Participacion Permanente en Sociedades'
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 2 
+AND c.cod_grupo = 1
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Otras Inversiones'
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 2 
+AND c.cod_grupo = 1
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Bienes de Uso'
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 2 
+AND c.cod_grupo = 1
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Activos Intangibles'
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Otros Activos 02'
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 2 
+AND c.cod_grupo = 1
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Llave de Negocio';
+
+
+
+---------------------------------------VIEW----------------------------------------------------------------------------------------
+CREATE VIEW activonocorrientesaldo AS
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 2 
+AND c.cod_grupo = 1
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Creditos por Ventas'
+AND r.cod_rubro = 1
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 2 
+AND c.cod_grupo = 1
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Otros Creditos'
+AND r.cod_rubro = 2
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 2 
+AND c.cod_grupo = 1
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Bienes de Cambio'
+AND r.cod_rubro = 3
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 2 
+AND c.cod_grupo = 1
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Participacion Permanente en Sociedades'
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 2 
+AND c.cod_grupo = 1
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Otras Inversiones'
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 2 
+AND c.cod_grupo = 1
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Bienes de Uso'
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 2 
+AND c.cod_grupo = 1
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Activos Intangibles'
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Otros Activos 02'
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 2 
+AND c.cod_grupo = 1
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Llave de Negocio';
+
+-------------------SELECT * FROM `activonocorrientesaldo--------------------------------------------------------------------------------
+SELECT SUM(`Total`) FROM `activonocorrientesaldo`
+
+
+--------------------Usando UNIONS PASIVO CORRIENTE------------------------------------------------------------------------------
+
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 1 
+AND c.cod_grupo = 2
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Deudas Comerciales'
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 1
+AND c.cod_grupo = 2
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Prestamos'
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 1
+AND c.cod_grupo = 2
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Remuneraciones y Cargas Sociales'
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 1
+AND c.cod_grupo = 2
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Cargas Fiscales'
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 1
+AND c.cod_grupo = 2
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Anticipo de Clientes'
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 1
+AND c.cod_grupo = 2
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Dividendos a Pagar'
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 1
+AND c.cod_grupo = 2
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Otras Deudas'
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 1
+AND c.cod_grupo = 2
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Previsiones'
+AND R.cod_rubro = 8
+
+
+--------------------VISTA PASIVO CORRIENTE-------------------------------------------------------------------------
+
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 1 
+AND c.cod_grupo = 2
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Deudas Comerciales'
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 1
+AND c.cod_grupo = 2
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Prestamos'
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 1
+AND c.cod_grupo = 2
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Remuneraciones y Cargas Sociales'
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 1
+AND c.cod_grupo = 2
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Cargas Fiscales'
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 1
+AND c.cod_grupo = 2
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Anticipo de Clientes'
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 1
+AND c.cod_grupo = 2
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Dividendos a Pagar'
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 1
+AND c.cod_grupo = 2
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Otras Deudas'
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 1
+AND c.cod_grupo = 2
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Previsiones'
+AND R.cod_rubro = 8
+
+
+
+----------------------SELECT * FROM pasivocorrientesaldo-------------------------------------------------------------------
+
+--------------------CONSULTA DEL VALOR TOTAL DE LA VIEW(SUMA DE TODOS LOS RUBROS)-----------------------------------------
+SELECT SUM(`Total`) FROM `pasivocorrientesaldo`;
+
+
+
+----------------------PASIVO NO CORRIENTE-----------------------------------------------------------------------------------------
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 2
+AND c.cod_grupo = 2
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Deudas'
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 2
+AND c.cod_grupo = 2
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Previsiones'
+AND R.cod_rubro = 2
+
+-------------------------VIEW----------------------------------------------------
+
+CREATE VIEW pasivoNoCorrienteSaldo AS
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 2
+AND c.cod_grupo = 2
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Deudas'
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 2
+AND c.cod_grupo = 2
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Previsiones'
+AND R.cod_rubro = 2;
+
+-------------------SELECT * FROM `pasivonocorrientesaldo`------------------------------------------------------------------
+
+-------------------CONSULTA DEL VALOR TOTAL DE LA VIEW(SUMA DE TODOS LOS RUBROS)-----------------------------------------
+
+SELECT SUM(`Total`) FROM `pasivonocorrientesaldo`
+
+
+
+
+------------------------------------------PATRIMONIO NETO-----------------------------------------------------------------
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 0
+AND c.cod_grupo = 3
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Aportes de Los Propietarios'
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 0
+AND c.cod_grupo = 3
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Resultados Acumulados'
+
+
+------------------------VIEW-----------------------------------------------------------------------------------------------
+
+CREATE VIEW pastrimonioNetoSaldo AS
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 0
+AND c.cod_grupo = 3
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Aportes de Los Propietarios'
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 0
+AND c.cod_grupo = 3
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Resultados Acumulados'
+
+----------------------------SELECT * FROM `pastrimonionetosaldo`-------------------------------------------------------
+-------------------CONSULTA DEL VALOR TOTAL DE LA VIEW(SUMA DE TODOS LOS RUBROS)-----------------------------------------
+SELECT SUM(`Total`) FROM `pastrimonionetosaldo`;
+
+
+
+
+---------------------------RESULTADOS ORDINARIOS POSITIVOS-----------------------------------------------------------------
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 3
+AND c.cod_grupo = 4
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Ventas'
+
+----------------------------------VIEW--------------------------------------------------------------------------------------
+
+
+CREATE VIEW resultadosPositivosSaldo AS
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 3
+AND c.cod_grupo = 4
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Ventas';
+
+-----------------------------------SELECT * FROM `resultadospositivossaldo`-------------------------------------------------
+
+SELECT SUM(`Total`) FROM `resultadospositivossaldo`
+
+---------------------------RESULTADOS ORDINARIOS NEGATIVOS-----------------------------------------------------------------
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 4
+AND c.cod_grupo = 4
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Costos de los Bienes Vendidos y Servicios Prestados'
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 4
+AND c.cod_grupo = 4
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Gastos Comerciales'
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 4
+AND c.cod_grupo = 4
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Gastos Administrativos'
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 4
+AND c.cod_grupo = 4
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Otros Gastos'
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 4
+AND c.cod_grupo = 4
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Impuesto a las Ganancias';
+
+
+------------------------------VIEW-------------------------------------------------------------------------------------------------------------
+CREATE VIEW resultadosnegativossaldo AS 
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 4
+AND c.cod_grupo = 4
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Costos de los Bienes Vendidos y Servicios Prestados'
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 4
+AND c.cod_grupo = 4
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Gastos Comerciales'
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 4
+AND c.cod_grupo = 4
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Gastos Administrativos'
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 4
+AND c.cod_grupo = 4
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Otros Gastos'
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 4
+AND c.cod_grupo = 4
+and r.cod_rubro = c.cod_rubro
+AND r.nombre_rubro = 'Impuesto a las Ganancias';
+
+
+
+
+
+---------------------------RESULTADOS ORDINARIOS----------------------------------------------------------------------------
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE r.cod_rubro = c.cod_rubro
+and r.nombre_rubro = 'Resultado de Evaluacion de Bienes de Cambio a VNR'
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE r.cod_rubro = c.cod_rubro
+and r.nombre_rubro = 'Resultado de Inversiones en Entes Relacionados'
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE r.cod_rubro = c.cod_rubro
+and r.nombre_rubro = 'Resultados de Otras Inversiones'
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE r.cod_rubro = c.cod_rubro
+and r.nombre_rubro = 'Resultados Financieros por Tenencia'
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE r.cod_rubro = c.cod_rubro
+and r.nombre_rubro = 'Otros Ingresos o Egresos'
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE r.cod_rubro = c.cod_rubro
+and r.nombre_rubro = 'Depreciacion de la Llave de Negocio'
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE r.cod_rubro = c.cod_rubro
+and r.nombre_rubro = 'Participacion Minoritaria sobre Resultados'
+
+---------------------------VIEW--------------------------------------------------------------------------------------------
+
+CREATE VIEW resultadosordinariossaldo AS
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE r.cod_rubro = c.cod_rubro
+and r.nombre_rubro = 'Resultado de Evaluacion de Bienes de Cambio a VNR'
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE r.cod_rubro = c.cod_rubro
+and r.nombre_rubro = 'Resultado de Inversiones en Entes Relacionados'
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE r.cod_rubro = c.cod_rubro
+and r.nombre_rubro = 'Resultados de Otras Inversiones'
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE r.cod_rubro = c.cod_rubro
+and r.nombre_rubro = 'Resultados Financieros por Tenencia'
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE r.cod_rubro = c.cod_rubro
+and r.nombre_rubro = 'Otros Ingresos o Egresos'
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE r.cod_rubro = c.cod_rubro
+and r.nombre_rubro = 'Depreciacion de la Llave de Negocio'
+UNION
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE r.cod_rubro = c.cod_rubro
+and r.nombre_rubro = 'Participacion Minoritaria sobre Resultados'
+
+------------------------------SELECT * FROM `resultadosordinariossaldo`------------------------------------------------
+
+SELECT SUM(`Total`) FROM `resultadosordinariossaldo`
+
+
+---------------------------RESULTADOS EXTRAORDINARIOS-----------------------------------------------------------------
+
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 6
+AND c.cod_grupo = 4
+and r.cod_rubro = c.cod_rubro
+and r.nombre_rubro = 'Resultados Extraordinarios'
+
+
+---------------------------VIEW--------------------------------------------------------------------------------------------
+
+CREATE VIEW resultadosextraordinariossaldo AS
+SELECT r.nombre_rubro'Rubro', SUM(c.saldo_cuenta)'Total'
+FROM  cuenta c, rubro r
+WHERE  c.cod_bloque = 6
+AND c.cod_grupo = 4
+and r.cod_rubro = c.cod_rubro
+and r.nombre_rubro = 'Resultados Extraordinarios'
+
+----------------------SELECT * FROM `resultadosextraordinariossaldo`--------------------------------------------------------
+SELECT SUM(`Total`) FROM `resultadosextraordinariossaldo`;
+
+
+
+
+
+
+
+
